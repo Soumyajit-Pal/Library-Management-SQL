@@ -59,7 +59,7 @@ void admin(MYSQL* connection, Library l, Student s){
 		cin>>choice;
 		
 		if(choice==1){
-			system("cls");     // clears screen
+			system("cls");
 			string name;
 			int q;
 			
@@ -86,7 +86,7 @@ void admin(MYSQL* connection, Library l, Student s){
 		}
 		
 		else if(choice == 2){
-			system("cls");     // clears screen
+			system("cls");
 			string id;
 			cout<<"Enter Student ID: ";
 			cin>>id;
@@ -106,14 +106,14 @@ void admin(MYSQL* connection, Library l, Student s){
 			closed = true;
 		}
 	}
-	Sleep(3000);    // in milisec
+	Sleep(3000);
 }
 
 void display(MYSQL* connection){
 	system("cls");
 	cout<<"AVAILABLE BOOKS: "<<endl;
 	cout<<"---------------"<<endl;
-	string disp = "SELECT * FROM lib";	// * means select all
+	string disp = "SELECT * FROM lib";
 	if(mysql_query(connection, disp.c_str())){
 		cout<<"Error: "<<mysql_error(connection)<<endl;
 	}
@@ -139,7 +139,7 @@ void display(MYSQL* connection){
 void display1(MYSQL* connection){
 	cout<<"STUDENT IDs: "<<endl;
 	cout<<"---------------"<<endl;
-	string disp = "SELECT * FROM student";	// * means select all
+	string disp = "SELECT * FROM student";
 	if(mysql_query(connection, disp.c_str())){
 		cout<<"Error: "<<mysql_error(connection)<<endl;
 	}
@@ -176,7 +176,7 @@ int book(MYSQL* connection, string name){
 			while(row = mysql_fetch_row(res)){
 				for(int i=0; i<n; i++){
 					if(name == row[i]){
-						return atoi(row[i+1]); // atoi->ascii to int, i+1 cuz i+1 is the quantity row
+						return atoi(row[i+1]);
 					}
 					else{
 						cout<<"Book Not Found"<<endl;
@@ -248,11 +248,11 @@ int main() {
 	else{
 		cout<<"ERROR: "<<mysql_error(connection)<<endl;
 	} 
-	Sleep(3000);   // in milisec
+	Sleep(3000);
 	
 	bool exit = false;
 	while(!exit){
-		system("cls");      // clears screen
+		system("cls");
 		int val;
 		cout<<"WELCOME TO LIBRARY MANAGEMENT SYSTEM" <<endl;
 		cout<<"------------------------------------" <<endl;
@@ -281,6 +281,7 @@ int main() {
 	
 	mysql_close(connection);
 }
+
 
 
 
