@@ -59,7 +59,7 @@ void admin(MYSQL* connection, Library l, Student s){
 		cin>>choice;
 		
 		if(choice==1){
-			system("cls");     // clears screen
+			system("cls");
 			string name;
 			int q;
 			
@@ -75,7 +75,7 @@ void admin(MYSQL* connection, Library l, Student s){
 			ss<<l.getQuantity();
 			string sq = ss.str();
 			
-			string book = "INSERT INTO lib (Name, Quantity) VALUES('"+l.getName()+"', '"+sq+"') ";
+			string book = "INSERT INTO lib (Name, Quantity) VALUES('"+l.getName()+"', '"+sq+"') ON DUPLICATE KEY UPDATE Quantity = Quantity + VALUES(Quantity)";
 			
 			if(!mysql_query(connection, book.c_str())){
 				cout<<"Book Inserted"<<endl;
@@ -86,7 +86,7 @@ void admin(MYSQL* connection, Library l, Student s){
 		}
 		
 		else if(choice == 2){
-			system("cls");     // clears screen
+			system("cls");
 			string id;
 			cout<<"Enter Student ID: ";
 			cin>>id;
@@ -95,10 +95,10 @@ void admin(MYSQL* connection, Library l, Student s){
 			string student = "INSERT INTO student (Id) VALUES('"+s.getId()+"')";
 			
 			if(!mysql_query(connection, student.c_str())){
-				cout<<"Book Inserted"<<endl;
+				cout<<"Student ID Inserted"<<endl;
 			} 
 			else{
-				cout<<"Error: "<<mysql_error(connection)<<endl;
+				cout<<"Student ID already exists"<<endl;
 			} 
 		}
 		else if(!choice){
@@ -106,14 +106,14 @@ void admin(MYSQL* connection, Library l, Student s){
 			closed = true;
 		}
 	}
-	Sleep(3000);    // in milisec
+	Sleep(3000);
 }
 
 void display(MYSQL* connection){
 	system("cls");
-	cout<<"AVAILABLE BOOKS"<<endl;
+	cout<<"AVAILABLE BOOKS: "<<endl;
 	cout<<"---------------"<<endl;
-	string disp = "SELECT * FROM lib";	// * means select all
+	string disp = "SELECT * FROM lib";
 	if(mysql_query(connection, disp.c_str())){
 		cout<<"Error: "<<mysql_error(connection)<<endl;
 	}
@@ -132,6 +132,34 @@ void display(MYSQL* connection){
 			mysql_free_result(res);
 		}
 	}
+	cout<<"---------------"<<endl;
+	cout<<endl;
+}
+
+void display1(MYSQL* connection){
+	cout<<"STUDENT IDs: "<<endl;
+	cout<<"---------------"<<endl;
+	string disp = "SELECT * FROM student";
+	if(mysql_query(connection, disp.c_str())){
+		cout<<"Error: "<<mysql_error(connection)<<endl;
+	}
+	else{
+		MYSQL_RES* res;
+		res = mysql_store_result(connection);
+		if(res){
+			int n = mysql_num_fields(res);
+			MYSQL_ROW row;
+			while(row = mysql_fetch_row(res)){
+				for(int i=0; i<n; i++){
+					cout<<" "<<row[i];
+				}
+				cout<<endl;
+			}
+			mysql_free_result(res);
+		}
+	}
+	cout<<"---------------"<<endl;
+	cout<<endl;
 }
 
 int book(MYSQL* connection, string name){
@@ -148,7 +176,7 @@ int book(MYSQL* connection, string name){
 			while(row = mysql_fetch_row(res)){
 				for(int i=0; i<n; i++){
 					if(name == row[i]){
-						return atoi(row[i+1]); // atoi->ascii to int, i+1 cuz i+1 is the quantity row
+						return atoi(row[i+1]);
 					}
 					else{
 						cout<<"Book Not Found"<<endl;
@@ -220,11 +248,11 @@ int main() {
 	else{
 		cout<<"ERROR: "<<mysql_error(connection)<<endl;
 	} 
-	Sleep(3000);   // in milisec
+	Sleep(3000);
 	
 	bool exit = false;
 	while(!exit){
-		system("cls");      // clears screen
+		system("cls");
 		int val;
 		cout<<"WELCOME TO LIBRARY MANAGEMENT SYSTEM" <<endl;
 		cout<<"------------------------------------" <<endl;
@@ -236,6 +264,7 @@ int main() {
 		
 		if(val==1){
 			system("cls");
+			display1(connection);
 			admin(connection,l,s);
 		}
 		else if(val==2){
@@ -252,6 +281,7 @@ int main() {
 	
 	mysql_close(connection);
 }
+
 
 
 
