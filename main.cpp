@@ -5,9 +5,11 @@
 #include <sstream>
 using namespace std;
 
+// Database Configuration
+// IMPORTANT: Do not hardcode your actual password in source control.
 const char* HOST = "localhost";
 const char* USER = "root";
-const char* PW = "Spal@1325";
+const char* PW = "YOUR_MYSQL_PASSWORD_HERE"; 
 const char* DB = "mydb";
 
 

@@ -1,0 +1,14 @@
+# Ignore compiled C++ binaries
+*.exe
+*.o
+*.obj
+
+# Ignore MySQL libraries (These should be downloaded manually by the user, not committed)
+*.dll
+
+# Ignore IDE files
+.vscode/
+.vs/
+*.sln
+*.vcxproj
+*.vcxproj.user
